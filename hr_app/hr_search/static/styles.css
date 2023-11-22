@@ -1,0 +1,13 @@
+ 
+
+.badge-active {
+    background-color: green;
+    color: white;
+}
+
+.badge-terminated {
+    background-color: red;
+    color: white;
+}
+
+ 
