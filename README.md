@@ -11,3 +11,9 @@
 ## To run Django : `python3 hr_app/manage.py runserver`
 
 ## To run migration : `python3 hr_app/manage.py migrate`
+
+Access the OpenAPI Docs: Visit http://localhost:8000/docs or http://localhost:8000/redoc
+
+`sudo apt install redis-server`
+
+`pip freeze > requirements.txt`

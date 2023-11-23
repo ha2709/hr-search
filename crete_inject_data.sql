@@ -1,18 +1,95 @@
+-- Create the departments table
+CREATE TABLE departments (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+-- Create the positions table
+CREATE TABLE positions (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL
+);
+
+-- Create the locations table
+CREATE TABLE locations (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+-- Create the statuses table
+CREATE TABLE statuses (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+-- Create the employees table with foreign keys
 CREATE TABLE employees (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     contact_info VARCHAR(255) UNIQUE NOT NULL,
-    department VARCHAR(255),
-    position VARCHAR(255),
-    location VARCHAR(255),
-    status VARCHAR(255)
+    department_id INT,
+    position_id INT,
+    location_id INT,
+    status_id INT,
+    FOREIGN KEY (department_id) REFERENCES departments(id),
+    FOREIGN KEY (position_id) REFERENCES positions(id),
+    FOREIGN KEY (location_id) REFERENCES locations(id),
+    FOREIGN KEY (status_id) REFERENCES statuses(id)
 );
 
- 
-INSERT INTO employees (first_name, last_name, contact_info, department, position, location, status)
+
+-- Create the employees table with foreign keys
+CREATE TABLE employees (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    contact_info VARCHAR(255) UNIQUE NOT NULL,
+    department_id INT,
+    position_id INT,
+    location_id INT,
+    status_id INT,
+    FOREIGN KEY (department_id) REFERENCES departments(id),
+    FOREIGN KEY (position_id) REFERENCES positions(id),
+    FOREIGN KEY (location_id) REFERENCES locations(id),
+    FOREIGN KEY (status_id) REFERENCES statuses(id)
+);
+
+-- Insert data into the departments table
+INSERT INTO departments (name)
 VALUES
-    ('John', 'Doe', 'john@example.com', 'HR', 'Manager', 'New York', 'Active'),
-    ('Jane', 'Smith', 'jane@example.com', 'Sales', 'Sales Representative', 'Los Angeles', 'Active'),
-    ('Alice', 'Johnson', 'alice@example.com', 'IT', 'Software Engineer', 'San Francisco', 'Inactive'),
-    ('OO5Test', '005', 'email@example.com', 'asd', 'Assistant Manager', 'Singapore', 'ACTIVE');
+    ('HR'),
+    ('Sales'),
+    ('IT'),
+    ('asd');
+
+-- Insert data into the positions table
+INSERT INTO positions (title)
+VALUES
+    ('Manager'),
+    ('Sales Representative'),
+    ('Software Engineer'),
+    ('Assistant Manager');
+
+-- Insert data into the locations table
+INSERT INTO locations (name)
+VALUES
+    ('New York'),
+    ('Los Angeles'),
+    ('San Francisco'),
+    ('Singapore');
+
+-- Insert data into the statuses table
+INSERT INTO statuses (name)
+VALUES
+    ('Active'),
+    ('Inactive'),
+    ('ACTIVE');
+
+-- Insert data into the employees table
+INSERT INTO employees (first_name, last_name, contact_info, department_id, position_id, location_id, status_id)
+VALUES
+    ('John', 'Doe', 'john@example.com', 1, 1, 1, 1),
+    ('Jane', 'Smith', 'jane@example.com', 2, 2, 2, 1),
+    ('Alice', 'Johnson', 'alice@example.com', 3, 3, 3, 2),
+    ('OO5Test', '005', 'email@example.com', 4, 4, 4, 3);
