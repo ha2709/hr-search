@@ -2,7 +2,7 @@
 
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from .databases import Base  # import your declarative base instance from the database setup module
+from .databases import Base   
 
 class Department(Base):
     __tablename__ = 'departments'

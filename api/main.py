@@ -64,7 +64,7 @@ def search_employees(
     if location:
         query = query.filter(models.Employee.location == location)
     if company:
-        # Assuming 'company' is a field in your Employee model
+        
         query = query.filter(models.Employee.company == company)
     if department:
         query = query.filter(models.Employee.department == department)

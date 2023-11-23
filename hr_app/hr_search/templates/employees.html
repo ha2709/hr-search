@@ -40,7 +40,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <!-- Add your filtering options here -->
+                        
                             <form>
                                 <div class="form-group text-left">
                                     <label>Status</label>
@@ -147,18 +147,18 @@
                 {% endif %}
                 
                 {% if "department" in display_columns %}
-                <td>{{ employee.department }}</td>
+                <td>{{ employee.department.name }}</td>
                 {% endif %}
                 
                 {% if "location" in display_columns %}
-                <td>{{ employee.location }}</td>
+                <td>{{ employee.location.name }}</td>
                 {% endif %}
                 
                 {% if "position" in display_columns %}
-                <td>{{ employee.position }}</td>
+                <td>{{ employee.position.title }}</td>
                 {% endif %}
                 <td>
-                    <span class="badge badge-{{ employee.status|lower }}">{{ employee.status }}</span>
+                    <span class="badge badge-{{ employee.status|lower }}">{{ employee.status.name }}</span>
                 </td>
                 <td>
                     <a href="#" class="btn btn-primary btn-sm">Edit</a>
@@ -177,7 +177,7 @@
             <li class="page-item disabled">
                 <a class="page-link" href="#" tabindex="-1">Previous</a>
             </li>
-            <!-- You will need to dynamically generate page numbers based on your pagination logic -->
+          
             <li class="page-item"><a class="page-link" href="#">1</a></li>
             <li class="page-item"><a class="page-link" href="#">2</a></li>
             <li class="page-item"><a class="page-link" href="#">3</a></li>
@@ -192,7 +192,7 @@
     // JavaScript code to make the API call when the button is clicked
     document.getElementById("applyFiltersButton").addEventListener("click", function () {
         // Construct the API URL for the "search" endpoint
-        var apiUrl = "/api/search/"; // Replace with your actual API endpoint
+        var apiUrl = "/api/search/";  
 
         // Construct the filter parameters based on user input (if needed)
         var filters = {
