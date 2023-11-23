@@ -27,6 +27,90 @@
             <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#filterModal">
                 <i class="fas fa-filter"></i> Filter
             </button>
+       
+             
+            <!-- Filter Modal -->
+            <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="filterModalLabel">Filter Employees</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Add your filtering options here -->
+                            <form>
+                                <div class="form-group text-left">
+                                    <label>Status</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="activeFilter">
+                                        <label class="form-check-label active-checkbox-label" for="activeFilter">
+                                            Active
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="inactiveFilter">
+                                        <label class="form-check-label inactive-checkbox-label" for="inactiveFilter">
+                                            Inactive
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="onLeaveFilter">
+                                        <label class="form-check-label on-leave-checkbox-label" for="onLeaveFilter">
+                                            On Leave
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group text-left">
+                                    <div>
+                                        <label for="locationFilter" class="text-left">Location</label>
+                                        <select class="form-control" id="locationFilter">
+                                            <option>All Locations</option>
+                                            <option>Location 1</option>
+                                            <option>Location 2</option>
+                                            <!-- Add more location options as needed -->
+                                        </select>
+                                    </div>
+                                   
+                                </div>
+                                <div class="form-group  text-left text-inline">
+                                    <label for="companyFilter">Company</label>
+                                    <select class="form-control" id="companyFilter">
+                                        <option>All Companies</option>
+                                        <option>Company A</option>
+                                        <option>Company B</option>
+                                        <!-- Add more company options as needed -->
+                                    </select>
+                                </div>
+                                <div class="form-group  text-left">
+                                    <label for="positionFilter">Position</label>
+                                    <select class="form-control" id="positionFilter">
+                                        <option>All Positions</option>
+                                        <option>Position 1</option>
+                                        <option>Position 2</option>
+                                        <!-- Add more position options as needed -->
+                                    </select>
+                                </div>
+                                <div class="form-group  text-left">
+                                    <label for="departmentFilter">Department</label>
+                                    <select class="form-control" id="departmentFilter">
+                                        <option>All Departments</option>
+                                        <option>Department 1</option>
+                                        <option>Department 2</option>
+                                        <!-- Add more department options as needed -->
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Apply Filters</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <table class="table table-hover">
@@ -34,10 +118,21 @@
             <tr>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
-                <th scope="col">Contact Info</th>
-                <th scope="col">Department</th>
-                <th scope="col">Position</th>
-                <th scope="col">Location</th>
+                {% if "contact" in display_columns %}
+                    <th scope="col">Contact Info</th>
+                {% endif %}
+                
+                {% if "department" in display_columns %}
+                    <th scope="col">Department</th>
+                {% endif %}
+                
+                {% if "location" in display_columns %}
+                    <th scope="col">Location</th>
+                {% endif %}
+                
+                {% if "position" in display_columns %}
+                    <th scope="col">Position</th>
+                {% endif %}
                 <th scope="col">Status</th>
                 <th scope="col">Actions</th> <!-- Add a new column for Actions -->
             </tr>
@@ -47,10 +142,21 @@
             <tr>
                 <td>{{ employee.first_name }}</td>
                 <td>{{ employee.last_name }}</td>
+                {% if "contact" in display_columns %}
                 <td>{{ employee.contact_info }}</td>
+                {% endif %}
+                
+                {% if "department" in display_columns %}
                 <td>{{ employee.department }}</td>
-                <td>{{ employee.position }}</td>
+                {% endif %}
+                
+                {% if "location" in display_columns %}
                 <td>{{ employee.location }}</td>
+                {% endif %}
+                
+                {% if "position" in display_columns %}
+                <td>{{ employee.position }}</td>
+                {% endif %}
                 <td>
                     <span class="badge badge-{{ employee.status|lower }}">{{ employee.status }}</span>
                 </td>
@@ -81,4 +187,44 @@
         </ul>
     </nav>
 </div>
+
+<script>
+    // JavaScript code to make the API call when the button is clicked
+    document.getElementById("applyFiltersButton").addEventListener("click", function () {
+        // Construct the API URL for the "search" endpoint
+        var apiUrl = "/api/search/"; // Replace with your actual API endpoint
+
+        // Construct the filter parameters based on user input (if needed)
+        var filters = {
+            location: "Location 1", // Replace with actual user input
+            company: "Company A",   // Replace with actual user input
+            // Add other filter parameters as needed
+        };
+
+        // Make the API request using fetch()
+        fetch(apiUrl, {
+            method: "GET", 
+            headers: {
+                "Content-Type": "application/json", 
+            },
+            body: JSON.stringify(filters), 
+        })
+            .then(function (response) {
+                if (response.status === 200) {
+                    // Handle successful response here (e.g., update UI with results)
+                    response.json().then(function (data) {
+                        // Process and display data as needed
+                        console.log(data);
+                    });
+                } else {
+                    // Handle error response here
+                    console.error("API request failed with status: " + response.status);
+                }
+            })
+            .catch(function (error) {
+                // Handle network or other errors here
+                console.error("API request failed with error: " + error);
+            });
+    });
+</script>
 {% endblock %}

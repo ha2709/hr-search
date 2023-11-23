@@ -8,6 +8,6 @@
 
 ## To run API, `uvicorn api.main:app --reload --port 8001`
 
-## To run Django : `python3 hr_search/manage.py runserver`
+## To run Django : `python3 hr_app/manage.py runserver`
 
-## To run migration : `python hr_search/manage.py migrate`
+## To run migration : `python3 hr_app/manage.py migrate`

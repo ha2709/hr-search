@@ -3,7 +3,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Directory</title>
@@ -14,15 +14,28 @@
 
       <!-- include custom styles -->
     <link rel="stylesheet" href="{% static 'styles.css' %}">
-</head>
-<body>
-     
-    {% block content %}{% endblock %}
-    <!-- Include Bootstrap JS and its dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.9/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+    
+      /* Custom CSS for status checkbox text colors */
+      .active-checkbox-label {
+            color: #007bff; /* Blue color for Active */
+        }
+        .inactive-checkbox-label {
+            color: #dc3545; /* Red color for Inactive */
+        }
+        .on-leave-checkbox-label {
+            color: #ffc107; /* Yellow color for On Leave */
+        }
+    </style>
+  </head>
+  <body>
+      
+      {% block content %}{% endblock %}
+      <!-- Include Bootstrap JS and its dependencies -->
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.9/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-</body>
+  </body>
 </html>
 
