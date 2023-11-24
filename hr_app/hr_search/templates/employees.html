@@ -42,38 +42,31 @@
                         <div class="modal-body">
                         
                             <form>
+                              
+                                 
+                                <!-- Status Filter -->
                                 <div class="form-group text-left">
                                     <label>Status</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="activeFilter">
-                                        <label class="form-check-label active-checkbox-label" for="activeFilter">
-                                            Active
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="inactiveFilter">
-                                        <label class="form-check-label inactive-checkbox-label" for="inactiveFilter">
-                                            Inactive
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="onLeaveFilter">
-                                        <label class="form-check-label on-leave-checkbox-label" for="onLeaveFilter">
-                                            On Leave
-                                        </label>
-                                    </div>
+                                    {% for status in statuses %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="statusFilter" id="{{ status.name }}Filter" value="{{ status.name }}">
+                                            <label class="form-check-label" for="{{ status.name }}Filter">
+                                                {{ status.name }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
                                 </div>
+                              
+                                
+                                <!-- Location Filter -->
                                 <div class="form-group text-left">
-                                    <div>
-                                        <label for="locationFilter" class="text-left">Location</label>
-                                        <select class="form-control" id="locationFilter">
-                                            <option>All Locations</option>
-                                            <option>Location 1</option>
-                                            <option>Location 2</option>
-                                            <!-- Add more location options as needed -->
-                                        </select>
-                                    </div>
-                                   
+                                    <label for="locationFilter" class="text-left">Location</label>
+                                    <select class="form-control" id="locationFilter">
+                                       
+                                        {% for location in locations %}
+                                            <option>{{ location.name }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                                 <div class="form-group  text-left text-inline">
                                     <label for="companyFilter">Company</label>
@@ -81,97 +74,39 @@
                                         <option>All Companies</option>
                                         <option>Company A</option>
                                         <option>Company B</option>
-                                        <!-- Add more company options as needed -->
+                                        
                                     </select>
                                 </div>
                                 <div class="form-group  text-left">
                                     <label for="positionFilter">Position</label>
                                     <select class="form-control" id="positionFilter">
-                                        <option>All Positions</option>
-                                        <option>Position 1</option>
-                                        <option>Position 2</option>
-                                        <!-- Add more position options as needed -->
+                                        {% for position in positions %}
+                                            <option>{{ position.title }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 <div class="form-group  text-left">
                                     <label for="departmentFilter">Department</label>
                                     <select class="form-control" id="departmentFilter">
-                                        <option>All Departments</option>
-                                        <option>Department 1</option>
-                                        <option>Department 2</option>
-                                        <!-- Add more department options as needed -->
+                                        {% for department in departments %}
+                                            <option>{{ department.name }}</option>
+                                        {% endfor %}
+                                         
                                     </select>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Apply Filters</button>
+                            <button type="button" class="btn btn-primary" id="applyFiltersButton">Apply Filters</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <table class="table table-hover">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                {% if "contact" in display_columns %}
-                    <th scope="col">Contact Info</th>
-                {% endif %}
-                
-                {% if "department" in display_columns %}
-                    <th scope="col">Department</th>
-                {% endif %}
-                
-                {% if "location" in display_columns %}
-                    <th scope="col">Location</th>
-                {% endif %}
-                
-                {% if "position" in display_columns %}
-                    <th scope="col">Position</th>
-                {% endif %}
-                <th scope="col">Status</th>
-                <th scope="col">Actions</th> <!-- Add a new column for Actions -->
-            </tr>
-        </thead>
-        <tbody>
-            {% for employee in employees %}
-            <tr>
-                <td>{{ employee.first_name }}</td>
-                <td>{{ employee.last_name }}</td>
-                {% if "contact" in display_columns %}
-                <td>{{ employee.contact_info }}</td>
-                {% endif %}
-                
-                {% if "department" in display_columns %}
-                <td>{{ employee.department.name }}</td>
-                {% endif %}
-                
-                {% if "location" in display_columns %}
-                <td>{{ employee.location.name }}</td>
-                {% endif %}
-                
-                {% if "position" in display_columns %}
-                <td>{{ employee.position.title }}</td>
-                {% endif %}
-                <td>
-                    <span class="badge badge-{{ employee.status|lower }}">{{ employee.status.name }}</span>
-                </td>
-                <td>
-                    <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="8" class="text-center">No employees found</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div id="employeeTableContainer"></div>
+
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item disabled">
@@ -192,14 +127,29 @@
     // JavaScript code to make the API call when the button is clicked
     document.getElementById("applyFiltersButton").addEventListener("click", function () {
         // Construct the API URL for the "search" endpoint
-        var apiUrl = "/api/search/";  
+        var apiUrl = "http://localhost:8001/search/";  
+        // Get the status values from the checkboxes
+        var selectedStatus = document.querySelector('input[name="statusFilter"]:checked');
+        var locationFilter = document.getElementById("locationFilter");
+        var positionFilter = document.getElementById("positionFilter");
+        var departmentFilter = document.getElementById("departmentFilter");
+       
+        // Get the selected option's value
+        var selectedValue = positionFilter.value;
 
+        // Log the selected value to the console (you can use it as needed)
+        console.log("Selected Position Value:", selectedValue, selectedStatus);
         // Construct the filter parameters based on user input (if needed)
         var filters = {
-            location: "Location 1", // Replace with actual user input
-            company: "Company A",   // Replace with actual user input
-            // Add other filter parameters as needed
+            status: selectedStatus ? selectedStatus.value : null,
+            location: locationFilter ? locationFilter.value : null,
+            department: departmentFilter ? departmentFilter.value : null,
+            position: positionFilter ? positionFilter.value : null
+          
         };
+        // Append the filter parameters to the API URL
+        var queryString = Object.keys(filters).map(key => key + '=' + filters[key]).join('&');
+        apiUrl += '?' + queryString;
 
         // Make the API request using fetch()
         fetch(apiUrl, {
@@ -207,14 +157,16 @@
             headers: {
                 "Content-Type": "application/json", 
             },
-            body: JSON.stringify(filters), 
+             
         })
             .then(function (response) {
                 if (response.status === 200) {
                     // Handle successful response here (e.g., update UI with results)
                     response.json().then(function (data) {
                         // Process and display data as needed
-                        console.log(data);
+                        employees = data
+                        console.log(222, data);
+                        renderTable(data);
                     });
                 } else {
                     // Handle error response here
@@ -227,5 +179,61 @@
             });
     });
     
+    // Function to render the table with the new data
+    function renderTable(data) {
+        var tableContainer = document.getElementById("employeeTableContainer");
+
+        // Clear previous content
+        tableContainer.innerHTML = "";
+
+        // Create a new table
+        var table = document.createElement("table");
+        table.className = "table table-hover";
+
+        // Add table header
+        var thead = document.createElement("thead");
+        thead.className = "thead-dark"
+        var headerRow = document.createElement("tr");
+
+        // Add header columns
+        var headers = ["First Name", "Last Name", "Contact Info", "Department", "Location", "Position", "Status", "Actions"];
+        headers.forEach(function (headerText) {
+            var th = document.createElement("th");
+            th.textContent = headerText;
+            headerRow.appendChild(th);
+        });
+
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Add table body
+        var tbody = document.createElement("tbody");
+
+        // Add rows with employee data
+        data.forEach(function (employee) {
+            var tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${employee.first_name}</td>
+                <td>${employee.last_name}</td>
+                <td>${employee.contact_info || ""}</td>
+                <td>${employee.department ? employee.department.name : ""}</td>
+                <td>${employee.location ? employee.location.name : ""}</td>
+                <td>${employee.position ? employee.position.title : ""}</td>
+                <td><span class="badge badge-${employee.status.name}">${employee.status.name}</span></td>
+                <td>
+                    <a href="#" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        table.appendChild(tbody);
+
+        // Append the table to the container
+        tableContainer.appendChild(table);
+         
+        $('#filterModal').modal('hide');
+    }
 </script>
 {% endblock %}

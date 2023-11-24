@@ -66,8 +66,8 @@ VALUES
 INSERT INTO statuses (name)
 VALUES
     ('Active'),
-    ('Inactive'),
-    ('ACTIVE');
+    ('Not Started'),
+    ('Terminated');
 
 -- Insert data into the employees table
 INSERT INTO employees (first_name, last_name, contact_info, department_id, position_id, location_id, status_id)

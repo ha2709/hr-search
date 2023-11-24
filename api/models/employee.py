@@ -3,10 +3,6 @@ from sqlalchemy.orm import relationship
 from ..databases import Base
 
 
-
-
-
-
 class Employee(Base):
     __tablename__ = "employees"
     id = Column(Integer, primary_key=True, index=True)

@@ -12,7 +12,9 @@
 
 ## To run migration : `python3 hr_app/manage.py migrate`
 
-Access the OpenAPI Docs: Visit http://localhost:8000/docs or http://localhost:8000/redoc
+## on browser : `http://localhost:8000/api/`
+
+Access the OpenAPI Docs: Visit http://localhost:8001/docs or http://localhost:8001/redoc
 
 ## To generate requirements.txt 
 

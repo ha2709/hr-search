@@ -3,7 +3,6 @@ from sqlalchemy.orm import relationship
 from ..databases import Base
 
 
-
 class Location(Base):
     __tablename__ = "locations"
     id = Column(Integer, primary_key=True, index=True)

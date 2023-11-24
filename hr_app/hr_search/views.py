@@ -1,43 +1,45 @@
 from django.http import HttpResponse
 from django.shortcuts import render
- 
- 
+
+
 import requests
 
 
 def employee_list(request):
-    api_url = "http://localhost:8001/employees"
+    BASE_URL = "http://localhost:8001/"
+ 
 
-    try:
-        # Make an HTTP GET request to the API endpoint
-        response = requests.get(api_url)
-        print(17, response)
-        # Check if the API call was successful (HTTP status code 200)
-        if response.status_code == 200:
-            # Parse the JSON response to get the employee data
-            employees = response.json()
-        else:
-            # Handle the API call error
-            error_message = f"API call failed with status code: {response.status_code}"
-            return render(
-                request, "error_template.html", {"error_message": error_message}
-            )
+ 
+    # Fetch data from FastAPI endpoints
+    statuses = fetch_data_from_api(BASE_URL + "statuses")
+    locations = fetch_data_from_api(BASE_URL + "locations")
+    companies = fetch_data_from_api(BASE_URL + "companies/")  # Adjust the endpoint based on your API
+    positions = fetch_data_from_api(BASE_URL + "positions/")
+    departments = fetch_data_from_api(BASE_URL + "departments/")
 
-    except requests.exceptions.RequestException as e:
-        # Handle any network or request-related errors here
-        error_message = f"API request failed with error: {str(e)}"
-        return render(request, "error_template.html", {"error_message": error_message})
-
+    # Your existing code to get display_columns
     display_columns = get_organization_display_columns()
 
     context = {
         "display_columns": display_columns,
-        "employees": employees,
+        "employees": [],
+        "statuses": statuses,
+        "locations": locations,
+        "companies": companies,
+        "positions": positions,
+        "departments": departments,
     }
 
     return render(request, "employees.html", context)
 
-
+def fetch_data_from_api(api_url):
+    response = requests.get(api_url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        # Handle error response
+        return []
+    
 def get_organization_display_columns():
     # fetch the configuration for the current organization
     # This can involve querying  database or any other data source.
