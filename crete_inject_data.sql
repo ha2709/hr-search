@@ -1,47 +1,30 @@
 -- Create the departments table
 CREATE TABLE departments (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
 
 -- Create the positions table
 CREATE TABLE positions (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL
 );
 
 -- Create the locations table
 CREATE TABLE locations (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
 
 -- Create the statuses table
 CREATE TABLE statuses (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
 
 -- Create the employees table with foreign keys
 CREATE TABLE employees (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    contact_info VARCHAR(255) UNIQUE NOT NULL,
-    department_id INT,
-    position_id INT,
-    location_id INT,
-    status_id INT,
-    FOREIGN KEY (department_id) REFERENCES departments(id),
-    FOREIGN KEY (position_id) REFERENCES positions(id),
-    FOREIGN KEY (location_id) REFERENCES locations(id),
-    FOREIGN KEY (status_id) REFERENCES statuses(id)
-);
-
-
--- Create the employees table with foreign keys
-CREATE TABLE employees (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     contact_info VARCHAR(255) UNIQUE NOT NULL,

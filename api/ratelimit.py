@@ -1,22 +1,30 @@
 import time
+from functools import wraps
+from fastapi import FastAPI, HTTPException, Request, status
 
-REQUEST_LIMIT = 100  # for example
-WINDOW_SIZE = 60  # 60 seconds
 
-request_counters = {}
+def rate_limited(max_calls: int, time_frame: int):
+    """
+    :param max_calls: Maximum number of calls allowed in the specified time frame.
+    :param time_frame: The time frame (in seconds) for which the limit applies.
+    :return: Decorator function.
+    """
 
-def is_rate_limited(ip):
-    current_time = time.time()
-    window_start = current_time - WINDOW_SIZE
-    
-    if ip not in request_counters:
-        request_counters[ip] = []
-    
-    # Filter out requests outside the current window
-    request_counters[ip] = [timestamp for timestamp in request_counters[ip] if timestamp > window_start]
-    
-    if len(request_counters[ip]) < REQUEST_LIMIT:
-        request_counters[ip].append(current_time)
-        return False
-    else:
-        return True
+    def decorator(func):
+        calls = []
+
+        @wraps(func)
+        async def wrapper(request: Request, *args, **kwargs):
+            now = time.time()
+            calls_in_time_frame = [call for call in calls if call > now - time_frame]
+            if len(calls_in_time_frame) >= max_calls:
+                raise HTTPException(
+                    status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                    detail="Rate limit exceeded.",
+                )
+            calls.append(now)
+            return await func(request, *args, **kwargs)
+
+        return wrapper
+
+    return decorator

@@ -4,12 +4,9 @@ from django.template import loader
 from .models import Employee
 import requests
 
- 
-
-
 
 def employee_list(request):
-    api_url = 'http://localhost:8001/employees'   
+    api_url = "http://localhost:8001/employees"
 
     try:
         # Make an HTTP GET request to the API endpoint
@@ -20,24 +17,26 @@ def employee_list(request):
             # Parse the JSON response to get the employee data
             employees = response.json()
         else:
-            # Handle the API call error  
+            # Handle the API call error
             error_message = f"API call failed with status code: {response.status_code}"
-            return render(request, 'error_template.html', {'error_message': error_message})
+            return render(
+                request, "error_template.html", {"error_message": error_message}
+            )
 
     except requests.exceptions.RequestException as e:
         # Handle any network or request-related errors here
         error_message = f"API request failed with error: {str(e)}"
-        return render(request, 'error_template.html', {'error_message': error_message})
+        return render(request, "error_template.html", {"error_message": error_message})
 
-     
-    display_columns = get_organization_display_columns() 
- 
+    display_columns = get_organization_display_columns()
+
     context = {
-        'display_columns': display_columns,
-        'employees': employees,
+        "display_columns": display_columns,
+        "employees": employees,
     }
- 
-    return render(request, 'employees.html',context)
+
+    return render(request, "employees.html", context)
+
 
 def get_organization_display_columns():
     # fetch the configuration for the current organization
