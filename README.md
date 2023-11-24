@@ -14,6 +14,6 @@
 
 Access the OpenAPI Docs: Visit http://localhost:8000/docs or http://localhost:8000/redoc
 
-`sudo apt install redis-server`
+## To generate requirements.txt 
 
 `pip freeze > requirements.txt`
