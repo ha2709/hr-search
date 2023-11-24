@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from .. import schemas, models, databases
 from ..utils.rate_limit import rate_limited
 from dotenv import load_dotenv
-
+from typing import Optional, List
 router = APIRouter()
 load_dotenv()
 max_calls = int(os.getenv("MAX_CALLS", default=2))
