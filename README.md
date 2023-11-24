@@ -32,4 +32,4 @@ Access the OpenAPI Docs: Visit http://localhost:8000/docs or http://localhost:80
 
 
 
-`docker run -p 8001:8001`
+`docker run -p 8001:8001 fast-hr-app`
