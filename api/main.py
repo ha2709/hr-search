@@ -1,22 +1,10 @@
-import os
-import time
-from typing import Optional, List
-from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Depends, Query, status, Request
+ 
+from fastapi import FastAPI  
 import uvicorn
-# from pydantic import BaseModel
-from sqlalchemy.orm import Session
-from functools import wraps
-
-from . import schemas, models, databases
-from api.utils.rate_limit import rate_limited
-
-from api.models import Department, Position, Location, Status, Employee
 from .routers.employee import router as employee_router
 
 
 app = FastAPI()
-
 # Endpoint to get a list of all employees
 app.include_router(employee_router,  tags=["employees"])
 
