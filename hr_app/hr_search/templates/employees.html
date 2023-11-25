@@ -46,14 +46,14 @@
                                 <div class="form-group text-left">
                                     <label>Status</label>
                                     <div class="form-check"  >
-                                        <input class="form-check-input" type="radio" name="statusFilter" id="{{ status.name }}Filter" value="{{ status.name }}">
+                                        <input class="form-check-input" type="checkbox" name="statusFilter" id="{{ status.name }}Filter" value="{{ status.name }}">
                                         <label class="form-check-label" for="{{ status.name }}Filter">
                                            None
                                         </label>
                                     </div>
                                     {% for status in statuses %}
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="statusFilter" id="{{ status.name }}Filter" value="{{ status.name }}">
+                                            <input class="form-check-input" type="checkbox" name="statusFilter" id="{{ status.name }}Filter" value="{{ status.name }}">
                                             <label class="form-check-label" for="{{ status.name }}Filter" style="color: {% if status.name == 'Active' %}green{% elif status.name == 'Not started' %}purple{% elif status.name == 'Terminated' %}red{% else %}black{% endif %}">
                                                 {{ status.name }}
                                             </label>
@@ -141,11 +141,7 @@
         radioButtons.forEach(function (radioButton) {
             radioButton.checked = false;
         });
-        // document.querySelector('input[name="statusFilter"]:checked').value = '';
-        // document.getElementById("locationFilter").value = '';
-        // document.getElementById("positionFilter").value = '';
-        // document.getElementById("departmentFilter").value = '';
-      
+        
     });
  
     // JavaScript code to make the API call when the button is clicked
@@ -153,7 +149,12 @@
         // Construct the API URL for the "search" endpoint
         var searchAPIUrl = "http://localhost:8001/search/";  
         // Get the status values from the checkboxes
-        selectedStatus = document.querySelector('input[name="statusFilter"]:checked');
+        // selectedStatus = document.querySelector('input[name="statusFilter"]:checked');
+        // Get the checked checkboxes
+        var selectedStatuses = $("input[name='statusFilter']:checked").map(function () {
+            return $(this).val();
+        }).get();
+        console.log(157, selectedStatuses);
         locationFilter = document.getElementById("locationFilter");
         positionFilter = document.getElementById("positionFilter");
         departmentFilter = document.getElementById("departmentFilter");
@@ -183,16 +184,33 @@
                 console.error("Error:", error);
             });
         // Log the selected value to the console (you can use it as needed)
-        console.log("Selected companyFilter Value:", selectedValue, companyFilter);
+        console.log("Selected companyFilter Value:", selectedStatuses,selectedStatuses.length > 0, companyFilter,positionFilter, departmentFilter,locationFilter);
         // Construct the filter parameters based on user input (if needed)
-        var filters = {
-            status: selectedStatus ? selectedStatus.value : '',
-            location: locationFilter ? locationFilter.value : null,
-            department: departmentFilter ? departmentFilter.value : null,
-            position: positionFilter ? positionFilter.value : null,
-            company: companyFilter ? companyFilter : null
+        // var filters = {
+        //     status: selectedStatus ? selectedStatuses : '',
+        //     location: locationFilter ? locationFilter.value : '',
+        //     department: departmentFilter ? departmentFilter.value : '',
+        //     position: positionFilter ? positionFilter.value : '',
+        //     company: companyFilter ? companyFilter : ''
           
-        };
+        // };
+        var filters = {}
+        if ( selectedStatuses.length > 0) {
+            filters['status'] = selectedStatuses;
+        }
+        if (locationFilter.value && locationFilter.value.length > 0) {
+            filters['location'] = locationFilter.value ;
+        }
+        if (departmentFilter.value && departmentFilter.value.length > 0) {
+            filters['department'] = departmentFilter.value ;
+        }
+        if (positionFilter.value && positionFilter.value.length > 0) {
+            filters['position'] = positionFilter.value;
+        }
+        if (companyFilter != '') {
+            filters['company'] = companyFilter;
+        }
+        console.log(213, filters)
         // Append the filter parameters to the API URL
         var queryString = Object.keys(filters).map(key => key + '=' + filters[key]).join('&');
         searchAPIUrl += '?' + queryString;
@@ -207,7 +225,6 @@
             headers: {
                 "Content-Type": "application/json", 
                 "X-API-Key":"1234"
-
             },
              
         })
@@ -217,7 +234,7 @@
                     response.json().then(function (data) {
                         // Process and display data as needed
                         employees = data
-                        console.log(222, data);
+                        // console.log(222, data);
                         renderTable(data, columnData);
                     });
                 } else {
@@ -231,6 +248,18 @@
             });
     });
     
+    function getColorForName(name) {
+        // Define colors based on name values
+        if (name === 'Active') {
+            return '#4CAF50'; // Light green
+        } else if (name === 'Not started') {
+            return '#8A2BE2'; // Darker purple
+        } else if (name === 'Terminated') {
+            return '#FF6347'; // Light coral
+        } else {
+            return 'black';
+        }
+    }
     // Function to render the table with the new data
     function renderTable(data) {
         var tableContainer = document.getElementById("employeeTableContainer");
@@ -248,45 +277,26 @@
 
         // Add table header
         var thead = document.createElement("thead");
-        thead.className = "thead-dark"
+        thead.className = "thead-grey"
  
         var headerRow = document.createElement("tr");
-        // var headerRow = document.createElement("tr");
-        // print(246, columnData)
-        // // Add header columns based on the provided columnData
-        // headerColumn = ["First Name", "Last Name", ...columnData, "Status", "Actions"];
-        
-        // headerColumn.forEach(function (column) {
-        //         var th = document.createElement("th");
-        //         th.textContent = column;
-        //         headerRow.appendChild(th);
-        //     });
-        // var headers = ["First Name", "Last Name", "Contact Info", "Department", "Location", "Position", "Status", "Actions"];
-        // headers.forEach(function (headerText) {
-       
-        //     th.textContent = headerText;
-        //     headerRow.appendChild(th);
-        // });
         // Get keys from the first object
         var keys = Object.keys(data[0]);
 
         // Add header columns
         keys.forEach(function (key) {
             var th = document.createElement("th");
-            th.textContent = key;
+            th.textContent = key.replace(/_/g, ' ').toUpperCase(); 
             headerRow.appendChild(th);
         });
-        // Add "Actions" header
-        var actionsTh = document.createElement("th");
-        actionsTh.textContent = "Actions";
-        headerRow.appendChild(actionsTh);
+      
         thead.appendChild(headerRow);
         table.appendChild(thead);
  
 
         // Add table body
         var tbody = document.createElement("tbody");
-        // print(270, data, headerColumn)
+      
         // Add rows with employee data
         data.forEach(function (item) {
             var tr = document.createElement("tr");
@@ -296,20 +306,25 @@
                  // Check if key is an object
                 if (typeof item[key] === 'object' && item[key] !== null && 'name' in item[key]) {
                     td.textContent = item[key].name;
+                    // td.style.color = getColorForName(item[key].name);
+                    // Add the "badge" class if the key is "status"
+                    if (key === 'status') {
+                        var badgeSpan = document.createElement("span");
+                        badgeSpan.textContent = item[key].name.toUpperCase();
+                        badgeSpan.className = "badge";
+                        badgeSpan.style.backgroundColor = getColorForName(item[key].name);
+                        td.innerHTML = '';  // Clear the content to avoid duplicate text
+                        td.appendChild(badgeSpan);
+                    }
                 } else if (typeof item[key] === 'object' && item[key] !== null && 'title' in item[key]) {
                     td.textContent = item[key].title;
+                    
                 } else {
                     td.textContent = item[key];
                 }
                 tr.appendChild(td);
             });
-             // Add "Edit" and "Delete" buttons
-            var actionsTd = document.createElement("td");
-            actionsTd.innerHTML = `
-                <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                <a href="#" class="btn btn-danger btn-sm">Delete</a>
-            `;
-            tr.appendChild(actionsTd);
+            
     
             tbody.appendChild(tr);
         });
@@ -322,7 +337,7 @@
         locationFilter = '';
         positionFilter = '';
         companyFilter = ''
-        // document.getElementById("locationFilter") = '';
+      
         $('#filterModal').modal('hide');
     }
 </script>

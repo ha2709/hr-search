@@ -1,24 +1,14 @@
- 
 import os
-from fastapi import APIRouter, Depends, HTTPException
 import json
+from fastapi import APIRouter, Depends, HTTPException
 from typing import List
-
+from ..utils.column import get_company_display_columns
 
 company_router = APIRouter()
 # Get the directory path of the current file
 current_dir = os.path.dirname(os.path.abspath(__file__))
 json_file_path = os.path.join(current_dir, '..', 'company_config.json')
 
-
-def get_company_display_columns(company_name: str):
-    # Load the configuration from the JSON file
-    with open(json_file_path, 'r') as file:
-        config_data = json.load(file)
-
-    # Get the display columns for the specified company
-   
-    return config_data.get(company_name, [])
 
 
 @company_router.get("/companies")

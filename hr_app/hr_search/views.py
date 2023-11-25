@@ -3,31 +3,30 @@ import json
 from dotenv import load_dotenv
 from django.http import HttpResponse
 from django.shortcuts import render
-
+import requests
 
 load_dotenv()
 API_KEY_NAME = os.getenv("API_KEY_NAME")
 API_KEY = os.getenv("API_KEY")
-
-import requests
+API_URL = os.getenv("API_URL")
+# print(11, API_KEY_NAME, API_KEY)
 
 
 def employee_list(request):
-    BASE_URL = "http://localhost:8001/"
+    
 
     # Fetch data from FastAPI endpoints
-    statuses = fetch_data_from_api(BASE_URL + "statuses")
-    locations = fetch_data_from_api(BASE_URL + "locations")
+    statuses = fetch_data_from_api(API_URL + "statuses")
+    locations = fetch_data_from_api(API_URL + "locations")
     companies = fetch_data_from_api(
-        BASE_URL + "companies/"
+        API_URL + "companies/"
     )
-    positions = fetch_data_from_api(BASE_URL + "positions/")
-    departments = fetch_data_from_api(BASE_URL + "departments/")
+    positions = fetch_data_from_api(API_URL + "positions/")
+    departments = fetch_data_from_api(API_URL + "departments/")
 
-    # display_columns = get_organization_display_columns()
+ 
 
     context = {
-        # "display_columns": display_columns,
         "employees": [],
         "statuses": statuses,
         "locations": locations,
@@ -42,7 +41,7 @@ def employee_list(request):
 def fetch_data_from_api(api_url):
     headers = {
         "Content-Type": "application/json",
-        API_KEY_NAME:API_KEY, 
+        API_KEY_NAME : API_KEY, 
     }
     response = requests.get(api_url,headers=headers  )
     if response.status_code == 200:
