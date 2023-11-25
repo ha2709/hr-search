@@ -27,6 +27,7 @@ app.include_router(position_router, tags=["positions"])
 app.include_router(status_router, tags=["statuses"])
 app.include_router(company_router, tags=["company"])
 
+
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the API"}

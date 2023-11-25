@@ -13,18 +13,12 @@ API_URL = os.getenv("API_URL")
 
 
 def employee_list(request):
-    
-
     # Fetch data from FastAPI endpoints
     statuses = fetch_data_from_api(API_URL + "statuses")
     locations = fetch_data_from_api(API_URL + "locations")
-    companies = fetch_data_from_api(
-        API_URL + "companies/"
-    )
+    companies = fetch_data_from_api(API_URL + "companies/")
     positions = fetch_data_from_api(API_URL + "positions/")
     departments = fetch_data_from_api(API_URL + "departments/")
-
- 
 
     context = {
         "employees": [],
@@ -41,14 +35,11 @@ def employee_list(request):
 def fetch_data_from_api(api_url):
     headers = {
         "Content-Type": "application/json",
-        API_KEY_NAME : API_KEY, 
+        API_KEY_NAME: API_KEY,
     }
-    response = requests.get(api_url,headers=headers  )
+    response = requests.get(api_url, headers=headers)
     if response.status_code == 200:
         return response.json()
     else:
         # Handle error response
         return []
-
-
-
