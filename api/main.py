@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from .routers.employee import router as employee_router
+from .routers.department import department_router
+from .routers.employee import employee_router
+from .routers.location import location_router
+from .routers.position import position_router
+from .routers.status import status_router
 
 
 app = FastAPI()
@@ -15,6 +19,12 @@ app.add_middleware(
 )
 # Endpoint to get a list of all employees
 app.include_router(employee_router, tags=["employees"])
+# app.include_router(department_router, prefix="/api")
+app.include_router(department_router, tags=["deparment"])
+app.include_router(employee_router, tags=["employees"])
+app.include_router(location_router, tags=["locations"])
+app.include_router(position_router, tags=["positions"])
+app.include_router(status_router, tags=["statuses"])
 
 
 @app.get("/")

@@ -42,27 +42,29 @@
                         <div class="modal-body">
                         
                             <form>
-                              
-                                 
                                 <!-- Status Filter -->
                                 <div class="form-group text-left">
                                     <label>Status</label>
+                                    <div class="form-check"  >
+                                        <input class="form-check-input" type="radio" name="statusFilter" id="{{ status.name }}Filter" value="{{ status.name }}">
+                                        <label class="form-check-label" for="{{ status.name }}Filter">
+                                           None
+                                        </label>
+                                    </div>
                                     {% for status in statuses %}
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="statusFilter" id="{{ status.name }}Filter" value="{{ status.name }}">
-                                            <label class="form-check-label" for="{{ status.name }}Filter">
+                                            <label class="form-check-label" for="{{ status.name }}Filter" style="color: {% if status.name == 'Active' %}green{% elif status.name == 'Not started' %}purple{% elif status.name == 'Terminated' %}red{% else %}black{% endif %}">
                                                 {{ status.name }}
                                             </label>
                                         </div>
                                     {% endfor %}
-                                </div>
-                              
-                                
+                                </div>                              
                                 <!-- Location Filter -->
                                 <div class="form-group text-left">
                                     <label for="locationFilter" class="text-left">Location</label>
                                     <select class="form-control" id="locationFilter">
-                                       
+                                        <option> </option>
                                         {% for location in locations %}
                                             <option>{{ location.name }}</option>
                                         {% endfor %}
@@ -80,6 +82,7 @@
                                 <div class="form-group  text-left">
                                     <label for="positionFilter">Position</label>
                                     <select class="form-control" id="positionFilter">
+                                        <option> </option>
                                         {% for position in positions %}
                                             <option>{{ position.title }}</option>
                                         {% endfor %}
@@ -88,6 +91,7 @@
                                 <div class="form-group  text-left">
                                     <label for="departmentFilter">Department</label>
                                     <select class="form-control" id="departmentFilter">
+                                        <option> </option>
                                         {% for department in departments %}
                                             <option>{{ department.name }}</option>
                                         {% endfor %}
@@ -122,26 +126,43 @@
         </ul>
     </nav>
 </div>
-
 <script>
+    var selectedStatus ='';
+    var locationFilter = '';
+    var positionFilter ='';
+    var departmentFilter ='';
+    // Wait for the DOM to be ready
+    document.addEventListener("DOMContentLoaded", function () {
+        // Reset all radio buttons to null
+        var radioButtons = document.querySelectorAll('input[name="statusFilter"]');
+        radioButtons.forEach(function (radioButton) {
+            radioButton.checked = false;
+        });
+        // document.querySelector('input[name="statusFilter"]:checked').value = '';
+        // document.getElementById("locationFilter").value = '';
+        // document.getElementById("positionFilter").value = '';
+        // document.getElementById("departmentFilter").value = '';
+      
+    });
+ 
     // JavaScript code to make the API call when the button is clicked
     document.getElementById("applyFiltersButton").addEventListener("click", function () {
         // Construct the API URL for the "search" endpoint
         var apiUrl = "http://localhost:8001/search/";  
         // Get the status values from the checkboxes
-        var selectedStatus = document.querySelector('input[name="statusFilter"]:checked');
-        var locationFilter = document.getElementById("locationFilter");
-        var positionFilter = document.getElementById("positionFilter");
-        var departmentFilter = document.getElementById("departmentFilter");
+        selectedStatus = document.querySelector('input[name="statusFilter"]:checked');
+        locationFilter = document.getElementById("locationFilter");
+        positionFilter = document.getElementById("positionFilter");
+        departmentFilter = document.getElementById("departmentFilter");
        
-        // Get the selected option's value
+        // // Get the selected option's value
         var selectedValue = positionFilter.value;
 
         // Log the selected value to the console (you can use it as needed)
         console.log("Selected Position Value:", selectedValue, selectedStatus);
         // Construct the filter parameters based on user input (if needed)
         var filters = {
-            status: selectedStatus ? selectedStatus.value : null,
+            status: selectedStatus ? selectedStatus.value : '',
             location: locationFilter ? locationFilter.value : null,
             department: departmentFilter ? departmentFilter.value : null,
             position: positionFilter ? positionFilter.value : null
@@ -150,12 +171,17 @@
         // Append the filter parameters to the API URL
         var queryString = Object.keys(filters).map(key => key + '=' + filters[key]).join('&');
         apiUrl += '?' + queryString;
-
+        $("#locationFilter").val('');
+        $("#positionFilter").val('');
+        $("#departmentFilter").val('');
+        $("#statusFilter").val(false);
         // Make the API request using fetch()
         fetch(apiUrl, {
             method: "GET", 
             headers: {
                 "Content-Type": "application/json", 
+                "X-API-Key":"1234"
+
             },
              
         })
@@ -232,7 +258,10 @@
 
         // Append the table to the container
         tableContainer.appendChild(table);
-         
+        selectedStatus = '';
+        locationFilter = '';
+        positionFilter = '';
+        // document.getElementById("locationFilter") = '';
         $('#filterModal').modal('hide');
     }
 </script>
