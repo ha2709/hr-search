@@ -45,12 +45,7 @@
                                 <!-- Status Filter -->
                                 <div class="form-group text-left">
                                     <label>Status</label>
-                                    <div class="form-check"  >
-                                        <input class="form-check-input" type="checkbox" name="statusFilter" id="{{ status.name }}Filter" value="{{ status.name }}">
-                                        <label class="form-check-label" for="{{ status.name }}Filter">
-                                           None
-                                        </label>
-                                    </div>
+                                    
                                     {% for status in statuses %}
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="statusFilter" id="{{ status.name }}Filter" value="{{ status.name }}">
@@ -134,6 +129,9 @@
     var departmentFilter ='';
     var companyFilter ='';
     var columnData = [];
+    var apiKey = "{{ api_key }}";
+    var apiKeyName = "{{ api_key_name }}"
+    var apiURL = "{{ api_url }}"
     // Wait for the DOM to be ready
     document.addEventListener("DOMContentLoaded", function () {
         // Reset all radio buttons to null
@@ -141,13 +139,14 @@
         radioButtons.forEach(function (radioButton) {
             radioButton.checked = false;
         });
-        
+        console.log(144,  apiKey, apiKeyName, apiURL)
     });
  
     // JavaScript code to make the API call when the button is clicked
     document.getElementById("applyFiltersButton").addEventListener("click", function () {
         // Construct the API URL for the "search" endpoint
-        var searchAPIUrl = "http://localhost:8001/search/";  
+        var searchAPIUrl = `${apiURL}search`  
+        console.log(154, searchAPIUrl)
         // Get the status values from the checkboxes
         // selectedStatus = document.querySelector('input[name="statusFilter"]:checked');
         // Get the checked checkboxes
@@ -164,7 +163,7 @@
         var selectedValue = positionFilter.value;
            
         // Construct the URL with the company value
-        var companyAPIUrl = `http://localhost:8001/companies/${companyFilter}`;
+        var companyAPIUrl = `${apiURL}companies/${companyFilter}`;
         console.log(167,companyFilter,companyAPIUrl)
         // Make the HTTP GET request
         fetch(companyAPIUrl)
@@ -185,15 +184,7 @@
             });
         // Log the selected value to the console (you can use it as needed)
         console.log("Selected companyFilter Value:", selectedStatuses,selectedStatuses.length > 0, companyFilter,positionFilter, departmentFilter,locationFilter);
-        // Construct the filter parameters based on user input (if needed)
-        // var filters = {
-        //     status: selectedStatus ? selectedStatuses : '',
-        //     location: locationFilter ? locationFilter.value : '',
-        //     department: departmentFilter ? departmentFilter.value : '',
-        //     position: positionFilter ? positionFilter.value : '',
-        //     company: companyFilter ? companyFilter : ''
-          
-        // };
+   
         var filters = {}
         if ( selectedStatuses.length > 0) {
             filters['status'] = selectedStatuses;
@@ -210,7 +201,7 @@
         if (companyFilter != '') {
             filters['company'] = companyFilter;
         }
-        console.log(213, filters)
+        console.log(213, filters,  apiKeyName, apiKey)
         // Append the filter parameters to the API URL
         var queryString = Object.keys(filters).map(key => key + '=' + filters[key]).join('&');
         searchAPIUrl += '?' + queryString;
@@ -220,13 +211,15 @@
         $("#companyFilter").val('');
         $("#statusFilter").val(false);
         // Make the API request using fetch()
+        headers = {
+            "Content-Type": "application/json", 
+             
+        }
+        headers[apiKeyName] = apiKey
+        console.log(223, headers)
         fetch(searchAPIUrl, {
             method: "GET", 
-            headers: {
-                "Content-Type": "application/json", 
-                "X-API-Key":"1234"
-            },
-             
+            headers: headers
         })
             .then(function (response) {
                 if (response.status === 200) {

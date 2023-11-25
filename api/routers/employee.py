@@ -18,7 +18,7 @@ max_calls = int(os.getenv("MAX_CALLS", default=2))
 time_frame = int(os.getenv("TIME_FRAME", default=60))
 
 
-@employee_router.get("/search/", response_model=None)
+@employee_router.get("/search", response_model=None)
 @rate_limited(max_calls=max_calls, time_frame=time_frame)
 async def search_employees(
     request: Request,
