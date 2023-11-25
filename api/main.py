@@ -18,14 +18,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 # Endpoint to get a list of all employees
-app.include_router(employee_router, tags=["employees"])
+app.include_router(employee_router, tags=["employees"],prefix="/v1")
 # app.include_router(department_router, prefix="/api")
-app.include_router(department_router, tags=["deparment"])
-app.include_router(employee_router, tags=["employees"])
-app.include_router(location_router, tags=["locations"])
-app.include_router(position_router, tags=["positions"])
-app.include_router(status_router, tags=["statuses"])
-app.include_router(company_router, tags=["company"])
+app.include_router(department_router, tags=["deparment"],prefix="/v1")
+app.include_router(employee_router, tags=["employees"],prefix="/v1")
+app.include_router(location_router, tags=["locations"],prefix="/v1")
+app.include_router(position_router, tags=["positions"],prefix="/v1")
+app.include_router(status_router, tags=["statuses"],prefix="/v1")
+app.include_router(company_router, tags=["company"],prefix="/v1")
 
 
 @app.get("/")

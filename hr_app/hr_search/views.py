@@ -10,7 +10,9 @@ load_dotenv()
 API_KEY_NAME = os.getenv("API_KEY_NAME")
 API_KEY = os.getenv("API_KEY")
 API_URL = os.getenv("API_URL")
- 
+print(13, API_URL)
+
+
 @login_required
 def search_employee(request):
     # Fetch data from FastAPI endpoints

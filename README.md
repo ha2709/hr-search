@@ -57,6 +57,6 @@ The routers contains all the route
 the Models folder contains all the model. I use ORM for some benefits: using object rather than write query, code easier to read and maintain, easy to switch between databases, automatic create tables, avoid writting complex query, data is validated.  In case of millions users in DB. it help to reduce redundancy for the position, location, status... (we only load the id instead of loading the name of it - position, location, department ) in the table Employee. It helps better retrieve data.  
 Django will read from .env and send them to the template via context: such as API key, API key name, API url ... 
 
- 
-
 For the search array of status, I will combine result for each status. 
+
+To help scale up, it will read the server's API from .env. 
