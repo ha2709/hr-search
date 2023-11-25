@@ -1,13 +1,13 @@
 import os
-from fastapi import APIRouter, Depends, HTTPException, Request, status
-from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 from typing import List
+from fastapi import APIRouter, Depends, HTTPException, Request, status
+from sqlalchemy.orm import Session
 from .. import models, databases
 from ..schemas.employee import Employee, EmployeeCreate, EmployeeBase
 from ..utils.rate_limit import rate_limited
 from ..utils.security import verify_api_key
-
+from .company import get_company_display_columns
 
 employee_router = APIRouter()
 load_dotenv()
@@ -15,7 +15,7 @@ max_calls = int(os.getenv("MAX_CALLS", default=2))
 time_frame = int(os.getenv("TIME_FRAME", default=60))
 
 
-@employee_router.get("/employees/", response_model=List[Employee])
+@employee_router.get("/employees", response_model=List[Employee])
 # @rate_limited(max_calls=max_calls, time_frame=time_frame)
 async def read_employees(
     request: Request,
@@ -61,7 +61,7 @@ async def read_employee(
     return db_employee
 
 
-@employee_router.get("/search/", response_model=List[Employee])
+@employee_router.get("/search/", response_model=None)
 @rate_limited(max_calls=max_calls, time_frame=time_frame)
 async def search_employees(
     request: Request,
@@ -84,7 +84,24 @@ async def search_employees(
         query = query.filter(models.Employee.department.has(name=department))
     if position:
         query = query.filter(models.Employee.position.has(title=position))
-
+    header_column = []
+    if company:
+        column_data = get_company_display_columns(company)
+        header_column = ["first_name", "last_name"] + column_data + ["status"]
+     
     results = query.all()
+ 
+    # Filter the data based on the header_column
+    filtered_results = []
+    for employee in results:
+        filtered_employee = {}
 
-    return results
+        # Include only the attributes present in header_column
+        for key in header_column:
+            if hasattr(employee, key):
+                filtered_employee[key] = getattr(employee, key)
+
+        filtered_results.append(filtered_employee)
+
+ 
+    return filtered_results

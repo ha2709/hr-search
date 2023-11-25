@@ -1,4 +1,5 @@
 import os
+import json
 from dotenv import load_dotenv
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -17,20 +18,20 @@ def employee_list(request):
     # Fetch data from FastAPI endpoints
     statuses = fetch_data_from_api(BASE_URL + "statuses")
     locations = fetch_data_from_api(BASE_URL + "locations")
-    # companies = fetch_data_from_api(
-    #     BASE_URL + "companies/"
-    # )
+    companies = fetch_data_from_api(
+        BASE_URL + "companies/"
+    )
     positions = fetch_data_from_api(BASE_URL + "positions/")
     departments = fetch_data_from_api(BASE_URL + "departments/")
 
-    display_columns = get_organization_display_columns()
+    # display_columns = get_organization_display_columns()
 
     context = {
-        "display_columns": display_columns,
+        # "display_columns": display_columns,
         "employees": [],
         "statuses": statuses,
         "locations": locations,
-        # "companies": companies,
+        "companies": companies,
         "positions": positions,
         "departments": departments,
     }
@@ -51,8 +52,4 @@ def fetch_data_from_api(api_url):
         return []
 
 
-def get_organization_display_columns():
-    
-    # Return a list of column names based on the organization's preference.
-    # For example, ["contact", "department", "position"]
-    return ["contact", "department", "position"]
+

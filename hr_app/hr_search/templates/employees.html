@@ -73,9 +73,10 @@
                                 <div class="form-group  text-left text-inline">
                                     <label for="companyFilter">Company</label>
                                     <select class="form-control" id="companyFilter">
-                                        <option>All Companies</option>
-                                        <option>Company A</option>
-                                        <option>Company B</option>
+                                        <option> </option>
+                                        {% for company in companies %}
+                                            <option>{{ company }}</option>
+                                        {% endfor %}
                                         
                                     </select>
                                 </div>
@@ -131,6 +132,8 @@
     var locationFilter = '';
     var positionFilter ='';
     var departmentFilter ='';
+    var companyFilter ='';
+    var columnData = [];
     // Wait for the DOM to be ready
     document.addEventListener("DOMContentLoaded", function () {
         // Reset all radio buttons to null
@@ -148,35 +151,58 @@
     // JavaScript code to make the API call when the button is clicked
     document.getElementById("applyFiltersButton").addEventListener("click", function () {
         // Construct the API URL for the "search" endpoint
-        var apiUrl = "http://localhost:8001/search/";  
+        var searchAPIUrl = "http://localhost:8001/search/";  
         // Get the status values from the checkboxes
         selectedStatus = document.querySelector('input[name="statusFilter"]:checked');
         locationFilter = document.getElementById("locationFilter");
         positionFilter = document.getElementById("positionFilter");
         departmentFilter = document.getElementById("departmentFilter");
-       
+        companyFilter = document.getElementById("companyFilter");
+        companyFilter = companyFilter.value
         // // Get the selected option's value
         var selectedValue = positionFilter.value;
-
+           
+        // Construct the URL with the company value
+        var companyAPIUrl = `http://localhost:8001/companies/${companyFilter}`;
+        console.log(167,companyFilter,companyAPIUrl)
+        // Make the HTTP GET request
+        fetch(companyAPIUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                columnData = data
+                // Handle the data received from the server
+                console.log("Company Data:", columnData);
+            })
+            .catch(error => {
+                // Handle errors
+                console.error("Error:", error);
+            });
         // Log the selected value to the console (you can use it as needed)
-        console.log("Selected Position Value:", selectedValue, selectedStatus);
+        console.log("Selected companyFilter Value:", selectedValue, companyFilter);
         // Construct the filter parameters based on user input (if needed)
         var filters = {
             status: selectedStatus ? selectedStatus.value : '',
             location: locationFilter ? locationFilter.value : null,
             department: departmentFilter ? departmentFilter.value : null,
-            position: positionFilter ? positionFilter.value : null
+            position: positionFilter ? positionFilter.value : null,
+            company: companyFilter ? companyFilter : null
           
         };
         // Append the filter parameters to the API URL
         var queryString = Object.keys(filters).map(key => key + '=' + filters[key]).join('&');
-        apiUrl += '?' + queryString;
+        searchAPIUrl += '?' + queryString;
         $("#locationFilter").val('');
         $("#positionFilter").val('');
         $("#departmentFilter").val('');
+        $("#companyFilter").val('');
         $("#statusFilter").val(false);
         // Make the API request using fetch()
-        fetch(apiUrl, {
+        fetch(searchAPIUrl, {
             method: "GET", 
             headers: {
                 "Content-Type": "application/json", 
@@ -192,7 +218,7 @@
                         // Process and display data as needed
                         employees = data
                         console.log(222, data);
-                        renderTable(data);
+                        renderTable(data, columnData);
                     });
                 } else {
                     // Handle error response here
@@ -212,6 +238,10 @@
         // Clear previous content
         tableContainer.innerHTML = "";
 
+        if (data.length === 0) {
+            // No data to display
+            return;
+        }
         // Create a new table
         var table = document.createElement("table");
         table.className = "table table-hover";
@@ -219,38 +249,68 @@
         // Add table header
         var thead = document.createElement("thead");
         thead.className = "thead-dark"
+ 
         var headerRow = document.createElement("tr");
+        // var headerRow = document.createElement("tr");
+        // print(246, columnData)
+        // // Add header columns based on the provided columnData
+        // headerColumn = ["First Name", "Last Name", ...columnData, "Status", "Actions"];
+        
+        // headerColumn.forEach(function (column) {
+        //         var th = document.createElement("th");
+        //         th.textContent = column;
+        //         headerRow.appendChild(th);
+        //     });
+        // var headers = ["First Name", "Last Name", "Contact Info", "Department", "Location", "Position", "Status", "Actions"];
+        // headers.forEach(function (headerText) {
+       
+        //     th.textContent = headerText;
+        //     headerRow.appendChild(th);
+        // });
+        // Get keys from the first object
+        var keys = Object.keys(data[0]);
 
         // Add header columns
-        var headers = ["First Name", "Last Name", "Contact Info", "Department", "Location", "Position", "Status", "Actions"];
-        headers.forEach(function (headerText) {
+        keys.forEach(function (key) {
             var th = document.createElement("th");
-            th.textContent = headerText;
+            th.textContent = key;
             headerRow.appendChild(th);
         });
-
+        // Add "Actions" header
+        var actionsTh = document.createElement("th");
+        actionsTh.textContent = "Actions";
+        headerRow.appendChild(actionsTh);
         thead.appendChild(headerRow);
         table.appendChild(thead);
+ 
 
         // Add table body
         var tbody = document.createElement("tbody");
-
+        // print(270, data, headerColumn)
         // Add rows with employee data
-        data.forEach(function (employee) {
+        data.forEach(function (item) {
             var tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${employee.first_name}</td>
-                <td>${employee.last_name}</td>
-                <td>${employee.contact_info || ""}</td>
-                <td>${employee.department ? employee.department.name : ""}</td>
-                <td>${employee.location ? employee.location.name : ""}</td>
-                <td>${employee.position ? employee.position.title : ""}</td>
-                <td><span class="badge badge-${employee.status.name}">${employee.status.name}</span></td>
-                <td>
-                    <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                </td>
+            // Add cells with item data
+            keys.forEach(function (key) {
+                var td = document.createElement("td");
+                 // Check if key is an object
+                if (typeof item[key] === 'object' && item[key] !== null && 'name' in item[key]) {
+                    td.textContent = item[key].name;
+                } else if (typeof item[key] === 'object' && item[key] !== null && 'title' in item[key]) {
+                    td.textContent = item[key].title;
+                } else {
+                    td.textContent = item[key];
+                }
+                tr.appendChild(td);
+            });
+             // Add "Edit" and "Delete" buttons
+            var actionsTd = document.createElement("td");
+            actionsTd.innerHTML = `
+                <a href="#" class="btn btn-primary btn-sm">Edit</a>
+                <a href="#" class="btn btn-danger btn-sm">Delete</a>
             `;
+            tr.appendChild(actionsTd);
+    
             tbody.appendChild(tr);
         });
 
@@ -261,6 +321,7 @@
         selectedStatus = '';
         locationFilter = '';
         positionFilter = '';
+        companyFilter = ''
         // document.getElementById("locationFilter") = '';
         $('#filterModal').modal('hide');
     }

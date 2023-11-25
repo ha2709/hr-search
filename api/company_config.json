@@ -1,0 +1,8 @@
+
+{
+    "company_1": ["contact_info", "department", "position"],
+    "company_2": ["department", "location", "position"],
+    "company_3": ["contact_info", "department", "location", "position"]
+ 
+}
+  
