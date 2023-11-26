@@ -177,4 +177,4 @@ There are 2 branches in Github repo:
     * docker , it is used for running docker compose
     * main, run in local without docker compose 
 
-They are differents in service name, import files and can't be merged. 
+They are differents in service name, import files.
