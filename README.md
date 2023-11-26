@@ -81,6 +81,11 @@ Stop your local PostgreSQL service:
 
 `sudo service postgresql stop`
 
+Start your local PostgreSQL service for local branch work:
+
+`sudo service postgresql start` 
+
+
 Run Django Docker container:
 
 `docker run -p 8000:8000 hr-django-app`
@@ -166,9 +171,9 @@ Implemented simple rate limiting using it as a decorator for a router.
 
 ## GitHub Repository Branches:
 
-- **docker :** Used for running Docker Compose.
-* **main :** Run locally without Docker Compose.
-    
+- **main, docker :** Used for running Docker Compose.
+- **local :** Run locally without Docker Compose.
+- **tests :** Run tests all routers.
 Branches have different service names, import files, 
 
  
