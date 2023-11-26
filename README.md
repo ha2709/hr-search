@@ -18,6 +18,7 @@ To run the Docker Compose setup and build the containers, execute the following 
 cd hr_search
 docker-compose up --build
 ```
+
 To run docker next time:
 
 `docker-compose up`
@@ -165,16 +166,11 @@ Implemented simple rate limiting using it as a decorator for a router.
 
 ## GitHub Repository Branches:
 
-    * docker: Used for running Docker Compose.
-    * main: Run locally without Docker Compose.
+- **docker :** Used for running Docker Compose.
+* **main :** Run locally without Docker Compose.
     
-Branches have different service names, import files, and cannot be merged.
+Branches have different service names, import files, 
 
-I implement the simple rate limited and using it as a decorator of a router. 
+ 
 
-There are 2 branches in Github repo:
-
-    * docker , it is used for running docker compose
-    * main, run in local without docker compose 
-
-They are differents in service name, import files.
+ 
