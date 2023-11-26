@@ -8,7 +8,19 @@ To activate the virtual environment, run:
 
 ## Project Name  
 
-The project name is `hr_app` .
+The project name is `hr_search` .
+
+## Running the Docker Compose Setup
+
+To run the Docker Compose setup and build the containers, execute the following command in your terminal:
+
+```
+cd hr_search
+docker-compose up --build
+```
+To run docker next time:
+
+`docker-compose up`
 
 ## Set Up Environment Variables
 
