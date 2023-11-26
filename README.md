@@ -33,6 +33,14 @@ To run API, use the following command:
 
  `uvicorn api.main:app --reload --port 8001`
 
+## To run Test API :
+
+```
+git checkout tests
+cd api
+pytest
+```
+
 ## Run Django
 
 To run Django : `python3 hr_app/manage.py runserver`
@@ -167,13 +175,20 @@ To scale up, read the server's API from .env.
 
 ## Rate Limiting
 
-Implemented simple rate limiting using it as a decorator for a router.
+Implemented simple rate limiting, using it as a decorator for a router. No external library is used for rate-limitting
 
 ## GitHub Repository Branches:
 
+<<<<<<< HEAD
 - **main, docker :** Used for running Docker Compose.
 - **local :** Run locally without Docker Compose.
 - **tests :** Run tests all routers.
+=======
+- **local :** Used for running Docker Compose.
+- **main, docker :** Run locally without Docker Compose.
+- **tests :** run Py test
+    
+>>>>>>> tests
 Branches have different service names, import files, 
 
  

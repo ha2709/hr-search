@@ -1,12 +1,12 @@
 import os
 from dotenv import load_dotenv
-from ..utils.rate_limit import rate_limited
+from utils.rate_limit import rate_limited
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from typing import List
-from .. import models, databases
-from ..schemas.position import Position
-from ..utils.security import verify_api_key
+import models, databases
+from schemas.position import Position
+from utils.security import verify_api_key
 
 
 position_router = APIRouter()
@@ -19,6 +19,7 @@ time_frame = int(os.getenv("TIME_FRAME", default=60))
 @rate_limited(max_calls=max_calls, time_frame=time_frame)
 async def get_positions(
     request: Request,
-    db: Session = Depends(databases.get_db), api_key: str = Depends(verify_api_key)
+    db: Session = Depends(databases.get_db),
+    api_key: str = Depends(verify_api_key),
 ):
     return db.query(models.Position).all()

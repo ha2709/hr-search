@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 import json
 from fastapi import APIRouter, Depends, Request
 from typing import List
-from ..utils.column import get_company_display_columns
-from ..utils.rate_limit import rate_limited
+from utils.column import get_company_display_columns
+from utils.rate_limit import rate_limited
 
 
 company_router = APIRouter()
