@@ -43,7 +43,7 @@ def fetch_data_from_api(api_url):
         "Content-Type": "application/json",
         API_KEY_NAME: API_KEY,
     }
-    print(46, api_url)
+  
     try:
         response = requests.get(api_url, headers=headers)
 

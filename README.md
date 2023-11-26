@@ -18,6 +18,7 @@ To run the Docker Compose setup and build the containers, execute the following 
 cd hr_search
 docker-compose up --build
 ```
+
 To run docker next time:
 
 `docker-compose up`
@@ -31,6 +32,14 @@ rename or copy .env.example to .env in each service.
 To run API, use the following command:
 
  `uvicorn api.main:app --reload --port 8001`
+
+## To run Test API :
+
+```
+git checkout tests
+cd api
+pytest
+```
 
 ## Run Django
 
@@ -161,16 +170,17 @@ To scale up, read the server's API from .env.
 
 ## Rate Limiting
 
-Implemented simple rate limiting using it as a decorator for a router.
+Implemented simple rate limiting, using it as a decorator for a router. No external library is used for rate-limitting
 
 ## GitHub Repository Branches:
 
-    * docker: Used for running Docker Compose.
-    * main: Run locally without Docker Compose.
+- **local :** Used for running Docker Compose.
+- **main, docker :** Run locally without Docker Compose.
+- **tests :** run Py test
     
-Branches have different service names, import files, and cannot be merged.
+Branches have different service names, import files, 
 
-I implement the simple rate limited and using it as a decorator of a router. 
+ 
 
 There are  branches in Github repo:
 
