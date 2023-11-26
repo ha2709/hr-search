@@ -87,4 +87,8 @@ To help scale up, it will read the server's API from .env.
 
 I implement the simple rate limited and using it as a decorator of a router. 
 
-There are some changes when running docker-compose: such as DB_HOST is postgres, my local, without Docker, DB_HOST is localhost
+There are 2 branches in Github repo:
+
+-- docker , it is used for running docker compose
+-- main, run in local without docker compose 
+They are differents in service name, import files and can't be merged. 

@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 import json
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, Request
 from typing import List
 from utils.column import get_company_display_columns
 from utils.rate_limit import rate_limited
@@ -18,7 +18,7 @@ time_frame = int(os.getenv("TIME_FRAME", default=60))
 
 @company_router.get("/companies")
 @rate_limited(max_calls=max_calls, time_frame=time_frame)
-async def get_company_list():
+async def get_company_list( request: Request,):
     # Load the configuration from the JSON file
     with open(json_file_path, "r") as file:
         config_data = json.load(file)

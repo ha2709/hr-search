@@ -29,6 +29,7 @@ services:
       - "5432:5432"
     volumes:
       - ./postgres/init-scripts:/docker-entrypoint-initdb.d
+  
   django:
     container_name: django-app
     restart: always

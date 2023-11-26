@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from typing import List
 import models, databases
@@ -16,7 +16,8 @@ time_frame = int(os.getenv("TIME_FRAME", default=60))
 
 @location_router.get("/locations", response_model=List[Location])
 @rate_limited(max_calls=max_calls, time_frame=time_frame)
-def get_locations(
+async def get_locations(
+    request: Request,
     db: Session = Depends(databases.get_db), api_key: str = Depends(verify_api_key)
 ):
     return db.query(models.Location).all()

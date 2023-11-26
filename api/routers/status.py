@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException,Request
 from sqlalchemy.orm import Session
 from typing import List
 import models, databases
@@ -16,7 +16,8 @@ time_frame = int(os.getenv("TIME_FRAME", default=60))
 
 @status_router.get("/statuses", response_model=List[Status])
 @rate_limited(max_calls=max_calls, time_frame=time_frame)
-def get_statuses(
+async def get_statuses(
+    request: Request,
     db: Session = Depends(databases.get_db), api_key: str = Depends(verify_api_key)
 ):
     return db.query(models.Status).all()
