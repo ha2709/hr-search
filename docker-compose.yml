@@ -1,6 +1,22 @@
 version: '3'
 
 services:
+  fastapi:
+    container_name: fast-api
+    restart: always
+    build:
+      context: ./api
+    
+    env_file:
+      - ./api/.env
+    ports:
+      - "8001:8001"
+      
+    volumes:
+      - ./api:/usr/src/app
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:latest
     container_name: postgres-db
@@ -24,22 +40,11 @@ services:
       - ./hr_app/.env
     ports:
       - "8000:8000"
+      
     depends_on:
       - fastapi
     volumes:
       - ./hr_app:/app
 
-  fastapi:
-    container_name: fast-api
-    restart: always
-    build:
-      context: ./api
-    
-    env_file:
-      - ./api/.env
-    ports:
-      - "8001:8001"
-    volumes:
-      - ./api:/usr/src/app
-    depends_on:
-      - postgres
+
+      

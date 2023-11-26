@@ -1,4 +1,4 @@
-from .. import models
+import models
 
 
 def apply_filters(query, status=None, location=None, department=None, position=None):
