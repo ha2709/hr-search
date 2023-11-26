@@ -172,13 +172,9 @@ Branches have different service names, import files, and cannot be merged.
 
 I implement the simple rate limited and using it as a decorator of a router. 
 
-There are 2 branches in Github repo:
+There are  branches in Github repo:
 
-    * docker , it is used for running docker compose
-    * main, run in local without docker compose 
+    * main , it is used for running docker compose. Please change in api .env DB_HOST=postgres ;in django API_URL=http://postgres:8001/v1/
+    * local, run in local without docker compose. Please change in api .env DB_HOST=localhost ;in django API_URL=http://localhost:8001/v1/
 
-<<<<<<< HEAD
 They are differents in service name, import files.
-=======
-They are differents in service name, import files and can't be merged. 
->>>>>>> docker

@@ -43,10 +43,19 @@ def fetch_data_from_api(api_url):
         "Content-Type": "application/json",
         API_KEY_NAME: API_KEY,
     }
-  
-    response = requests.get(api_url, headers=headers)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        # Handle error response
+    print(46, api_url)
+    try:
+        response = requests.get(api_url, headers=headers)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            # Handle error response
+            print(f"Error: {response.status_code}")
+            return []
+    
+    except requests.RequestException as e:
+        # Handle other exceptions related to the request
+        print(f"Request Exception: {e}")
         return []
