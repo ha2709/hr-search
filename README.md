@@ -158,19 +158,5 @@ To scale up, read the server's API from .env. If running with Docker, it will re
 
 Implemented simple rate limiting, using it as a decorator for a router. No external library is used for rate-limitting
 
-## GitHub Repository Branches:
-
-- **main, docker :** Used for running Docker Compose.
-- **local :** Run locally without Docker Compose.
-- **tests :** Run tests all routers.
- 
 
  
-
-There are  branches in Github repo:
-
-   * **main** , it is used for running docker compose. 
-   * **local**, run in local without docker compose. 
-   * **tests**: run tests scripts
-
-They are differents in service name, import files. Because in Docker, Django will call the service name, not "localhost" like in the .env file. 
