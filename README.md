@@ -158,4 +158,10 @@ To scale up, read the server's API from .env. If running with Docker, it will re
 
 Implemented simple rate limiting, using it as a decorator for a router. No external library is used for rate-limitting
 
+## GitHub Repository Branches:
+ 
+- **main, docker :** Used for running Docker Compose.
+- **local :** Run locally without Docker Compose.
+- **tests :** Run tests all routers.
+
 There are many branches in my Github repository. I work alone and don't have time so I had pushed on main and other branches. It is not best practices to push to main branch.
