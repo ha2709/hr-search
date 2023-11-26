@@ -178,4 +178,4 @@ There are  branches in Github repo:
    * **local**, run in local without docker compose. 
    * **tests**: run tests scripts
 
-They are differents in service name, import files.
+They are differents in service name, import files. Because in Docker, Django will call the service name, not "localhost" like in the .env file. 
