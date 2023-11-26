@@ -179,16 +179,9 @@ Implemented simple rate limiting, using it as a decorator for a router. No exter
 
 ## GitHub Repository Branches:
 
-<<<<<<< HEAD
 - **main, docker :** Used for running Docker Compose.
 - **local :** Run locally without Docker Compose.
 - **tests :** Run tests all routers.
-=======
-- **local :** Used for running Docker Compose.
-- **main, docker :** Run locally without Docker Compose.
-- **tests :** run Py test
-    
->>>>>>> tests
 Branches have different service names, import files, 
 
  
