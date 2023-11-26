@@ -174,7 +174,8 @@ I implement the simple rate limited and using it as a decorator of a router.
 
 There are  branches in Github repo:
 
-    * main , it is used for running docker compose. Please change in api .env DB_HOST=postgres ;in django API_URL=http://postgres:8001/v1/
-    * local, run in local without docker compose. Please change in api .env DB_HOST=localhost ;in django API_URL=http://localhost:8001/v1/
+   * **main** , it is used for running docker compose. 
+   * **local**, run in local without docker compose. 
+   * **tests**: run tests scripts
 
 They are differents in service name, import files.

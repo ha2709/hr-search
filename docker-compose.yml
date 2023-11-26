@@ -6,9 +6,16 @@ services:
     restart: always
     build:
       context: ./api
-    
-    env_file:
-      - ./api/.env
+    environment:
+      - API_KEY_NAME=X-API-Key
+      - API_KEY=1234
+      - MAX_CALLS=10
+      - TIME_FRAME=60
+      - DB_USER=postgres
+      - DB_PASSWORD=1234
+      - DB_HOST=postgres
+    # env_file:
+    #   - ./api/.env
     ports:
       - "8001:8001"
       
@@ -35,9 +42,13 @@ services:
     restart: always
     build:
       context: ./hr_app
- 
-    env_file:
-      - ./hr_app/.env
+    environment:
+      - API_KEY=1234
+      - API_KEY_NAME=X-API-Key
+      - API_URL_FE=http://localhost:8001/v1/
+      - API_URL=http://fastapi:8001/v1/
+    # env_file:
+    #   - ./hr_app/.env
     ports:
       - "8000:8000"
       
