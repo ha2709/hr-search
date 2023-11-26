@@ -12,6 +12,14 @@ The project name is `hr_search` .
 
 ## Running the Docker Compose Setup
 
+To enable Docker on VS Code, you may need to execute the following commands:
+
+```
+sudo su
+chmod -R 777 /var/run/docker.sock
+ 
+```
+
 To run the Docker Compose setup and build the containers, execute the following command in your terminal:
 
 ```
@@ -71,9 +79,7 @@ To generate requirements.txt, run:
 
 ## Docker Build for Django
 
-In `hr-search/hr-app`, build the Docker image for Django:
 
-`docker build -f Dockerfile-django -t hr-django-app .`
 
 List processes running on port 8000:
 
@@ -93,20 +99,6 @@ Start your local PostgreSQL service for local branch work:
 
 `sudo service postgresql start` 
 
-
-Run Django Docker container:
-
-`docker run -p 8000:8000 hr-django-app`
-
-## Docker Build for FastAPI
-
-In `hr-search/api`, build the Docker image for FastAPI:
-
-`docker build -f Dockerfile-api -t fast-hr-app .`
-
-Run FastAPI Docker container:
-
-`docker run -p 8001:8001 fast-hr-app`
 
 ## Access PostgreSQL in Container
 
@@ -156,15 +148,6 @@ Django is configured to read environment variables from the `.env` file and pass
 
 To enhance search functionality, I combine results for each status in the search array, providing a comprehensive and streamlined approach to status-based queries.
 
-
-To enable Docker on VS Code, you may need to execute the following commands:
-
-```
-sudo su
-chmod -R 777 /var/run/docker.sock
- 
-```
-
 ## Django Environment Configuration
 
 Django reads environment variables from .env and sends them to templates via context.
@@ -182,7 +165,8 @@ Implemented simple rate limiting, using it as a decorator for a router. No exter
 - **main, docker :** Used for running Docker Compose.
 - **local :** Run locally without Docker Compose.
 - **tests :** Run tests all routers.
-Branches have different service names, import files, 
+
+Branches have different in API URL , import files, 
 
  
 
