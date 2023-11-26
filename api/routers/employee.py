@@ -5,12 +5,12 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, Request, status, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
-from .. import models, databases
-from ..schemas.employee import Employee, EmployeeCreate, EmployeeBase
-from ..utils.rate_limit import rate_limited
-from ..utils.security import verify_api_key
-from ..utils.column import get_company_display_columns
-from ..services.employee import apply_filters
+import models, databases
+from schemas.employee import Employee, EmployeeCreate, EmployeeBase
+from utils.rate_limit import rate_limited
+from utils.security import verify_api_key
+from utils.column import get_company_display_columns
+from services.employee import apply_filters
 
 employee_router = APIRouter()
 load_dotenv()
@@ -35,10 +35,10 @@ async def search_employees(
     if status:
         status_string = status[0]
     else:
-        status_string=""
+        status_string = ""
     # Split the string into a list
     status_list = status_string.split(",")
-  
+
     results = []
     if len(status_list) < 2:
         results = apply_filters(query, status, location, department, position)
@@ -63,7 +63,7 @@ async def search_employees(
         column_data = get_company_display_columns("company_3")
         # get all column header
     header_column = ["first_name", "last_name"] + column_data + ["status"]
-   
+
     # Filter the data based on the header_column
     filtered_results = []
     for employee in results:
