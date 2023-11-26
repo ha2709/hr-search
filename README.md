@@ -36,6 +36,7 @@ To run API, use the following command:
 ## To run Test API :
 
 ```
+git checkout tests
 cd api
 pytest
 ```
