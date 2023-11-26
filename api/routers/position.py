@@ -1,12 +1,12 @@
 import os
 from dotenv import load_dotenv
-from ..utils.rate_limit import rate_limited
+from utils.rate_limit import rate_limited
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-from .. import models, databases
-from ..schemas.position import Position
-from ..utils.security import verify_api_key
+import models, databases
+from schemas.position import Position
+from utils.security import verify_api_key
 
 
 position_router = APIRouter()

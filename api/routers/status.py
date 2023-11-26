@@ -3,10 +3,10 @@ from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-from .. import models, databases
-from ..schemas.status import Status
-from ..utils.security import verify_api_key
-from ..utils.rate_limit import rate_limited
+import models, databases
+from schemas.status import Status
+from  utils.security import verify_api_key
+from utils.rate_limit import rate_limited
 
 
 status_router = APIRouter()

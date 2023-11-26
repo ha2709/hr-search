@@ -63,6 +63,18 @@ Then `kill -9 <pid>`
 
 `docker run -p 8001:8001 fast-hr-app`
 
+To access Postgres, in Container tab of VS code, attach Shell, then interminal
+
+```
+psql -d postgres -U postgres
+\l
+-c postgres
+\dt
+```
+It will list all the database, change to postgres databse. and list all tables: departments, employees...
+
+
+
 The services folder is used for interact with DB
 the utils forlder is for common functions used in programs
 The routers contains all the route
@@ -74,3 +86,5 @@ For the search array of status, I will combine result for each status.
 To help scale up, it will read the server's API from .env. 
 
 I implement the simple rate limited and using it as a decorator of a router. 
+
+There are some changes when running docker-compose: such as DB_HOST is postgres, my local, without Docker, DB_HOST is localhost

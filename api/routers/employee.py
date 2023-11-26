@@ -5,12 +5,12 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, Request, status, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
-from .. import models, databases
-from ..schemas.employee import Employee, EmployeeCreate, EmployeeBase
-from ..utils.rate_limit import rate_limited
-from ..utils.security import verify_api_key
-from ..utils.column import get_company_display_columns
-from ..services.employee import apply_filters
+import models, databases
+from schemas.employee import Employee, EmployeeCreate, EmployeeBase
+from utils.rate_limit import rate_limited
+from utils.security import verify_api_key
+from utils.column import get_company_display_columns
+from services.employee import apply_filters
 
 employee_router = APIRouter()
 load_dotenv()
