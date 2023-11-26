@@ -139,21 +139,21 @@
         radioButtons.forEach(function (radioButton) {
             radioButton.checked = false;
         });
-        console.log(144,  apiKey, apiKeyName, apiURL)
+       
     });
  
     // JavaScript code to make the API call when the button is clicked
     document.getElementById("applyFiltersButton").addEventListener("click", function () {
         // Construct the API URL for the "search" endpoint
         var searchAPIUrl = `${apiURL}search`  
-        console.log(154, searchAPIUrl)
+        // console.log(154, searchAPIUrl)
         // Get the status values from the checkboxes
-        // selectedStatus = document.querySelector('input[name="statusFilter"]:checked');
+        selectedStatus = document.querySelector('input[name="statusFilter"]:checked');
         // Get the checked checkboxes
         var selectedStatuses = $("input[name='statusFilter']:checked").map(function () {
             return $(this).val();
         }).get();
-        console.log(157, selectedStatuses);
+        // console.log(157, selectedStatuses);
         locationFilter = document.getElementById("locationFilter");
         positionFilter = document.getElementById("positionFilter");
         departmentFilter = document.getElementById("departmentFilter");
@@ -161,10 +161,12 @@
         companyFilter = companyFilter.value
         // // Get the selected option's value
         var selectedValue = positionFilter.value;
-           
+       
+        // Clear selected checkboxes
+        $("input[name='statusFilter']:checked").prop('checked', false);
         // Construct the URL with the company value
         var companyAPIUrl = `${apiURL}companies/${companyFilter}`;
-        console.log(167,companyFilter,companyAPIUrl)
+        // console.log(167,companyFilter,companyAPIUrl)
         // Make the HTTP GET request
         fetch(companyAPIUrl)
             .then(response => {
@@ -201,7 +203,7 @@
         if (companyFilter != '') {
             filters['company'] = companyFilter;
         }
-        console.log(213, filters,  apiKeyName, apiKey)
+        // console.log(213, filters,  apiKeyName, apiKey)
         // Append the filter parameters to the API URL
         var queryString = Object.keys(filters).map(key => key + '=' + filters[key]).join('&');
         searchAPIUrl += '?' + queryString;
