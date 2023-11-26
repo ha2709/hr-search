@@ -1,10 +1,16 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
+from dotenv import load_dotenv
 # DATABASE_URL = "mysql+mysqlconnector://root:1234@localhost/test"
-DATABASE_URL = "postgresql+psycopg2://postgres:1234@localhost/postgres"
-
+load_dotenv()
+DB_USER = str(os.getenv("DB_USER", default='postgres'))
+DB_PASSWORD = str(os.getenv("DB_PASSWORD", default='1234'))
+DB_HOST = str(os.getenv("DB_HOST", default='localhost'))
+DB_SCHEMA = str(os.getenv("DB_SCHEMA", default='postgres'))
+DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_SCHEMA}"
+print(13, DATABASE_URL)
 engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

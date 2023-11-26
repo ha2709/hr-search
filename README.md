@@ -36,17 +36,29 @@ Access the OpenAPI Docs: Visit http://localhost:8001/docs or http://localhost:80
 
 `pip freeze > requirements.txt`
 
-` chmod -R 777 /var/run/docker.sock`
+```
+sudo su
+chmod -R 777 /var/run/docker.sock
+ 
+```
 
 ## in hr-search/hr-app: 
 
-`docker build -t hr-django-app .`
+`docker build -f Dockerfile-django -t hr-django-app .`
+
+Please list all the process running on port 8000 `lsof -i : 8000`
+
+Then `kill -9 <pid>`
+
+## Stop your Postgres on local  
+
+`sudo service postgresql stop`
 
 `docker run -p 8000:8000 hr-django-app`
 
 ## in hr-search/api
 
-`docker build -t fast-hr-app .`
+`docker build -f Dockerfile-api -t fast-hr-app .`
 
 
 `docker run -p 8001:8001 fast-hr-app`
@@ -60,3 +72,5 @@ Django will read from .env and send them to the template via context: such as AP
 For the search array of status, I will combine result for each status. 
 
 To help scale up, it will read the server's API from .env. 
+
+I implement the simple rate limited and using it as a decorator of a router. 
