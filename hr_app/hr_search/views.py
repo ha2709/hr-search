@@ -11,7 +11,7 @@ API_KEY_NAME = os.getenv("API_KEY_NAME")
 API_KEY = os.getenv("API_KEY")
 API_URL = os.getenv("API_URL")
 API_URL_FE = os.getenv("API_URL_FE")
-print(13, API_URL)
+print(13, API_URL, API_URL_FE)
 
 
 @login_required

@@ -1,28 +1,6 @@
 version: '3'
 
 services:
-  fastapi:
-    container_name: fast-api
-    restart: always
-    build:
-      context: ./api
-    environment:
-      - API_KEY_NAME=X-API-Key
-      - API_KEY=1234
-      - MAX_CALLS=10
-      - TIME_FRAME=60
-      - DB_USER=postgres
-      - DB_PASSWORD=1234
-      - DB_HOST=postgres
-    # env_file:
-    #   - ./api/.env
-    ports:
-      - "8001:8001"
-      
-    volumes:
-      - ./api:/usr/src/app
-    depends_on:
-      - postgres
 
   postgres:
     image: postgres:latest
@@ -37,18 +15,29 @@ services:
     volumes:
       - ./postgres/init-scripts:/docker-entrypoint-initdb.d
   
+  fastapi:
+    container_name: fast-api
+    restart: always
+    build:
+      context: ./api
+    
+    env_file:
+      - ./api/.env.docker
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./api:/usr/src/app
+    depends_on:
+      - postgres  
+      
   django:
     container_name: django-app
     restart: always
     build:
       context: ./hr_app
-    environment:
-      - API_KEY=1234
-      - API_KEY_NAME=X-API-Key
-      - API_URL_FE=http://localhost:8001/v1/
-      - API_URL=http://fastapi:8001/v1/
-    # env_file:
-    #   - ./hr_app/.env
+ 
+    env_file:
+      - ./hr_app/.env.docker
     ports:
       - "8000:8000"
       
@@ -58,4 +47,3 @@ services:
       - ./hr_app:/app
 
 
-      

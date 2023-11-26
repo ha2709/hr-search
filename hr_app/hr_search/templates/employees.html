@@ -183,7 +183,7 @@
                 console.error("Error:", error);
             });
         // Log the selected value to the console (you can use it as needed)
-        console.log("Selected companyFilter Value:", selectedStatuses,selectedStatuses.length > 0, companyFilter,positionFilter, departmentFilter,locationFilter);
+        // console.log("Selected companyFilter Value:", selectedStatuses,selectedStatuses.length > 0, companyFilter,positionFilter, departmentFilter,locationFilter);
    
         var filters = {}
         if ( selectedStatuses.length > 0) {
@@ -216,7 +216,7 @@
              
         }
         headers[apiKeyName] = apiKey
-        console.log(223, headers)
+        // console.log(223, headers)
         fetch(searchAPIUrl, {
             method: "GET", 
             headers: headers
@@ -242,11 +242,13 @@
     });
     
     function getColorForName(name) {
+        // console.log(245, name)
         // Define colors based on name values
         if (name === 'Active') {
             return '#4CAF50'; 
-        } else if (name === 'Not started') {
-            return '#CCCCCC'; // Darker purple
+        } else if (name === 'Not Started') {
+            // console.log(249, name)
+            return '#8A2BE2'; 
         } else if (name === 'Terminated') {
             return '#FF6347';  
         } else {
