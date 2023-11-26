@@ -10,7 +10,8 @@ load_dotenv()
 API_KEY_NAME = os.getenv("API_KEY_NAME")
 API_KEY = os.getenv("API_KEY")
 API_URL = os.getenv("API_URL")
-print(13, API_URL)
+API_URL_FE = os.getenv("API_URL_FE")
+print(13, API_URL, API_URL_FE)
 
 
 @login_required
@@ -24,7 +25,7 @@ def search_employee(request):
 
     context = {
         # "employees": [],
-        "api_url": API_URL,
+        "api_url": API_URL_FE,
         "api_key":API_KEY,
         "api_key_name": API_KEY_NAME,
         "statuses": statuses,

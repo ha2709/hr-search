@@ -1,8 +1,8 @@
-# hr-search
+# hr-search Documentation
 
 ## Activate Enviroment  
 
-To activate the virtual environment, run:
+To activate the virtual environment, use the following command:
 
 `source env/bin/activate`
 
@@ -27,35 +27,38 @@ cd hr_search
 docker-compose up --build
 ```
 
-To run docker next time:
+To run docker subsequently:
 
 `docker-compose up`
 
-## Set Up Environment Variables
+## Running Tests
 
-rename or copy .env.example to .env in each service.
-
-## Run API
-
-To run API, use the following command:
-
- `uvicorn api.main:app --reload --port 8001`
-
-## To run Test API :
+To run tests:
 
 ```
-git checkout tests
 cd api
+source env/bin/activate
 pytest
 ```
 
+## Run API
+
+To run API local, use the following command:
+
+ `uvicorn api.main:app --reload --port 8001`
+
+
 ## Run Django
 
-To run Django : `python3 hr_app/manage.py runserver`
+To run Django local : 
+
+`python3 hr_app/manage.py runserver`
 
 ## Run Migration
 
-To run migrations, use : `python3 hr_app/manage.py migrate`
+To run migrations, use :
+
+`python3 hr_app/manage.py migrate`
 
 ## Create Superuser
 
@@ -78,8 +81,6 @@ To generate requirements.txt, run:
 `pip freeze > requirements.txt`
 
 ## Docker Build for Django
-
-
 
 List processes running on port 8000:
 
@@ -142,19 +143,16 @@ I leverage Object-Relational Mapping (ORM) for several advantages:
 
 ## Django Configuration
 
-Django is configured to read environment variables from the `.env` file and pass them to templates via context. This includes crucial information such as API keys, API key names, API URLs, and more.
+Django is configured to read environment variables from the `.env` file and pass them to templates via context. This includes crucial information such as API keys, API key names, API URLs, and more.   
 
 ## Search Array of Status
 
 To enhance search functionality, I combine results for each status in the search array, providing a comprehensive and streamlined approach to status-based queries.
 
-## Django Environment Configuration
-
-Django reads environment variables from .env and sends them to templates via context.
 
 ## Scaling
 
-To scale up, read the server's API from .env.
+To scale up, read the server's API from .env. If running with Docker, it will read from .env.docker.
 
 ## Rate Limiting
 
@@ -165,8 +163,7 @@ Implemented simple rate limiting, using it as a decorator for a router. No exter
 - **main, docker :** Used for running Docker Compose.
 - **local :** Run locally without Docker Compose.
 - **tests :** Run tests all routers.
-
-Branches have different in API URL , import files, 
+ 
 
  
 

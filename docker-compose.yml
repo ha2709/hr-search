@@ -21,7 +21,7 @@ services:
       context: ./hr_app
  
     env_file:
-      - ./hr_app/.env
+      - ./hr_app/.env.docker
     ports:
       - "8000:8000"
     depends_on:
@@ -36,7 +36,7 @@ services:
       context: ./api
     
     env_file:
-      - ./api/.env
+      - ./api/.env.docker
     ports:
       - "8001:8001"
     volumes:
