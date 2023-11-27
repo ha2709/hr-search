@@ -153,15 +153,28 @@ Django is configured to read environment variables from the `.env` file and pass
 
 - Companies search for Dynamic column ,  , I read colum data for each company or organization from `compnay_config.json`. If not company search, It will load all the columns. 
 
+## Authentication
+
+### Django Authentication:
+
+- **User Verification:** In Django, the login_required decorator is employed to ensure user verification. Users are created by administrators, providing them with unique usernames and passwords for login access.
+
+### API Authentication:
+
+- **X-API-Key :** API access control is implemented using the X-API-Key included in the header. This simple key mechanism serves as a means of authenticating and securing API interactions.
 
 ## Scaling
 
-- For scalability, configure the server's API by reading from the .env file. If Docker is being used, the configuration should be specified in the .env.docker file. Variables from the .env file can be injected through command-line arguments, Dockerfile configurations, or via Helm charts for Kubernetes and Terraform.
-- Before running Docker Compose, ensure to rename the .env.example file to .env.docker for proper configuration.
+
+- **Server API Configuration:** To enhance scalability, configure the server's API by extracting settings from the .env file. If Docker is utilized, define the configuration in the .env.docker file. Variables from the .env file can be injected through command-line arguments, Dockerfile configurations, or incorporated into Helm charts for Kubernetes and Terraform deployments.
+
+- **Docker Compose Preparation:** Before executing Docker Compose, ensure the proper configuration by renaming the .env.example file to .env.docker.
+
+- **Load Balancer (Optional):** For scaling the deployment using Docker Compose, the inclusion of a load balancer is an option. While not mandatory for this assignment, a load balancer can aid in distributing incoming traffic across multiple instances, contributing to a more scalable infrastructure.
 
 ## Rate Limiting
 
-Implemented simple rate limiting, using it as a decorator for a router. No external library is used for rate-limitting
+Implemented simple rate limiting, using it as a decorator for a router, specifying a maximum of 5 calls within a 60-second time frame. If the rate limit is exceeded, a 429 Too Many Requests response will be returned.No external library is used for rate-limitting
 
 ## GitHub Repository Branches:
  
