@@ -50,21 +50,23 @@ To run API local, use the following command:
 
 ## Run Django
 
-To run Django local : 
+ 
 
-`python3 hr_app/manage.py runserver`
+Attach Shell in Docker of Vscode tab : 
+
+`python3 manage.py runserver`
 
 ## Run Migration
 
 To run migrations, use :
 
-`python3 hr_app/manage.py migrate`
+`python3 manage.py migrate`
 
 ## Create Superuser
 
 To create a superuser, run:
 
-`python3 hr_app/manage.py createsuperuser`
+`python3 manage.py createsuperuser`
 
 Follow the prompts to set your username and password.
 
@@ -96,7 +98,7 @@ Stop your local PostgreSQL service:
 
 `sudo service postgresql stop`
 
-Start your local PostgreSQL service for local branch work:
+Start your local PostgreSQL service for testing or for running code on  local :
 
 `sudo service postgresql start` 
 
@@ -145,14 +147,17 @@ I leverage Object-Relational Mapping (ORM) for several advantages:
 
 Django is configured to read environment variables from the `.env` file and pass them to templates via context. This includes crucial information such as API keys, API key names, API URLs, and more.   
 
-## Search Array of Status
+## Search API 
 
-To enhance search functionality, I combine results for each status in the search array, providing a comprehensive and streamlined approach to status-based queries.
+- Search Array of Status: To enhance search functionality, I combine results for each status in the search array, providing a comprehensive and streamlined approach to status-based queries.
+
+- Companies search for Dynamic column ,  , I read colum data for each company or organization from `compnay_config.json`. If not company search, It will load all the columns. 
 
 
 ## Scaling
 
-To scale up, read the server's API from .env. If running with Docker, it will read from .env.docker.
+- For scalability, configure the server's API by reading from the .env file. If Docker is being used, the configuration should be specified in the .env.docker file. Variables from the .env file can be injected through command-line arguments, Dockerfile configurations, or via Helm charts for Kubernetes and Terraform.
+- Before running Docker Compose, ensure to rename the .env.example file to .env.docker for proper configuration.
 
 ## Rate Limiting
 

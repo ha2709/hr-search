@@ -6,10 +6,9 @@ services:
     image: postgres:latest
     container_name: postgres-db
     restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: postgres
+    env_file:
+      - .env.docker
+ 
     ports:
       - "5432:5432"
     volumes:
@@ -22,7 +21,7 @@ services:
       context: ./api
     
     env_file:
-      - ./api/.env.docker
+      - .env.docker
     ports:
       - "8001:8001"
     volumes:
@@ -35,12 +34,10 @@ services:
     restart: always
     build:
       context: ./hr_app
- 
     env_file:
-      - ./hr_app/.env.docker
+      - .env.docker
     ports:
       - "8000:8000"
-      
     depends_on:
       - fastapi
     volumes:
